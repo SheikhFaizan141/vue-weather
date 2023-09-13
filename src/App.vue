@@ -143,7 +143,11 @@ function handleForecast(weather) {
         :wind-speed="windSpeed" :pressure="pressure" :uv="uv" />
 
       <WeatherForecast :forecast="forecast" :time-offset="dt_offset" @on-click="handleForecast" />
-      <AirQuality />
+      
+      <AirQuality 
+      :lat="lat"
+      :lon="lon"
+      />
     </template>
 
   </div>

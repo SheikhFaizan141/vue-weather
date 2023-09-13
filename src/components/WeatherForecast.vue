@@ -90,7 +90,7 @@ function handleSelect(item, index) {
 
 .wf-temp {
     margin-block-start: .5rem;
-    font-size: 1.025rem;
+    font-size: 1.15rem;
     color: #3d3d3d;
 }
 
