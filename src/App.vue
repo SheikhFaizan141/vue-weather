@@ -72,7 +72,7 @@ watchEffect(async () => {
     uv.value = data['current']['uvi'];
 
     forecast.value = data['daily'];
-
+    // console.log(data);
     getLocationName();
   }
 })
@@ -93,7 +93,6 @@ function onSearchSubmit(value) {
 
 
 function handleForecast(weather) {
-  console.log(weather);
 
   sunrise.value = weather['sunrise'];
   sunset.value = weather['sunset'];
@@ -148,9 +147,13 @@ function handleForecast(weather) {
       :lat="lat"
       :lon="lon"
       />
+
+      <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13218.866539167077!2d74.81561945!3d34.076777549999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1694682043392!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
     </template>
 
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
