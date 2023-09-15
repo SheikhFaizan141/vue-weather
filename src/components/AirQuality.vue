@@ -18,14 +18,6 @@ const renderSub = {
     'nh3': { name: 'nh', sub: '3' },
 }
 
-// const range = {
-//     1: ['Good', 'green'],
-//     2: ['Fair', 'green'],
-//     3: ['Moderate', 'rgb(44, 191, 44)'],
-//     4: ['Poor', 'orangered'],
-//     5: ['Very Poor', '#ff2f2f']
-// }
-
 const range = new Map([
     [1, ['Good', 'green']],
     [2, ['Fair', 'green']],
@@ -187,15 +179,20 @@ watchEffect(async () => {
 
     padding-inline: 0.5rem;
     padding-block: 0.25rem;
- 
+   
+    color: #000000;
     border-radius: 3px;
 }
-
-
-.aq-particles-box>div {
-    background-color: rgb(255, 0, 0);
-    color: #fff;
-}
+/* .aq-particles-box > div::after { 
+  content: url('../../media/examples/firefox-logo.svg');
+  display: inline-block;
+  width: 100%;
+  height: .75rem;
+  margin-right: 6px;
+  background-color: green;
+  
+  border-radius: 6px;
+} */
 
 .aq-paritcles-value {
     margin-block-end: .25rem;
@@ -212,8 +209,12 @@ watchEffect(async () => {
     gap: 1rem;
 }
 
+
 .aq-pollutants-heading {
     font-size: 1.95rem;
     font-weight: 500;
 }
+
+
+
 </style>

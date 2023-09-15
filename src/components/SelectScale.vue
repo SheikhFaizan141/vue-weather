@@ -1,8 +1,28 @@
+<script setup>
+
+const props = defineProps(['selected']);
+defineEmits(['onScaleClick']);
+
+console.log(props.selected);
+
+
+// const get = computed()
+
+</script>
+
+
 <template>
     <div class="w-scale">
-        <span class="w-scale-btn w-scale-celsius">°C</span>
+        <span
+         @click="$emit('onScaleClick', 'c')" 
+         :class="{ 'w-scale-active': selected === 'c' }" 
+         class="w-scale-btn w-scale-celsius"
+        >°C</span>
         <span>|</span>
-        <span class="w-scale-btn w-scale-fahrenheit">°F</span>
+        <span 
+        @click="$emit('onScaleClick', 'f')" 
+        :class="{ 'w-scale-active' : selected === 'f'}" class="w-scale-btn w-scale-fahrenheit"
+        >°F</span>
     </div>
 </template>
 
@@ -15,6 +35,7 @@
     font-weight: 500;
     padding: .5rem;
     cursor: pointer;
+    color: #4b4b4b;
     /* outline: 1px solid red; */
 }
 
@@ -26,6 +47,7 @@
 }
 
 .w-scale-active {
-    color: darkblue;
+    color: #a3a3a3;
+    cursor: text;
 }
 </style>

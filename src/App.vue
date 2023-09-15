@@ -12,6 +12,7 @@ import { onMounted, ref, watchEffect } from 'vue';
 // import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
+
 const weatherData = ref(null);
 // const currentWeather = ref(null);
 const lat = ref(localStorage.getItem('lat'));
@@ -88,6 +89,7 @@ function getGeoCoordinates() {
 }
 
 function onSearchSubmit(value) {
+  console.log('g');
 
 }
 
@@ -108,6 +110,14 @@ function handleForecast(weather) {
   uv.value = weather['uvi'];
 }
 
+function handleScaleClick(value) {
+  if (value === 'c' && unit.value !== 'c') {
+    unit.value = 'c';
+  } else if (value === 'f' && unit.value !== 'f') {
+    unit.value = 'f';
+  }
+}
+
 
 </script>
 
@@ -122,18 +132,18 @@ function handleForecast(weather) {
       </template>
 
       <template #select-scale>
-        <SelectScale />
+        <SelectScale @on-scale-click="handleScaleClick" :selected="unit" />
       </template>
     </WeatherHeader>
 
     <template v-else>
       <WeatherHeader :location="place">
         <template #search-bar>
-          <SearchBar @click-on-loc="getGeoCoordinates" />
+          <SearchBar />
         </template>
 
         <template #select-scale>
-          <SelectScale />
+          <SelectScale @on-scale-click="handleScaleClick" :selected="unit" />
         </template>
       </WeatherHeader>
 
@@ -142,11 +152,8 @@ function handleForecast(weather) {
         :wind-speed="windSpeed" :pressure="pressure" :uv="uv" />
 
       <WeatherForecast :forecast="forecast" :time-offset="dt_offset" @on-click="handleForecast" />
-      
-      <AirQuality 
-      :lat="lat"
-      :lon="lon"
-      />
+
+      <AirQuality :lat="lat" :lon="lon" />
 
       <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13218.866539167077!2d74.81561945!3d34.076777549999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1694682043392!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
     </template>
@@ -154,6 +161,4 @@ function handleForecast(weather) {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
