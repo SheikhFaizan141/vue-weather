@@ -148,10 +148,10 @@ function handleScaleClick(value) {
       </WeatherHeader>
 
       <WeatherOverview :timezone_offset="dt_offset" :sunrise="sunrise" :sunset="sunset" :temp="currentTemp"
-        :feels-like="currentFleesLike" unit="c" :img-id="imgId" :weather-dis="weatherDis" :humidity="humidity"
+        :feels-like="currentFleesLike" :scale="unit" :img-id="imgId" :weather-dis="weatherDis" :humidity="humidity"
         :wind-speed="windSpeed" :pressure="pressure" :uv="uv" />
 
-      <WeatherForecast :forecast="forecast" :time-offset="dt_offset" @on-click="handleForecast" />
+      <WeatherForecast :scale="unit" :forecast="forecast" :time-offset="dt_offset" @on-click="handleForecast" />
 
       <AirQuality :lat="lat" :lon="lon" />
 

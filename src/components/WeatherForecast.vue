@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-const props = defineProps(['forecast', 'timeOffset']);
+const props = defineProps(['forecast', 'timeOffset', 'scale']);
 
 const emit = defineEmits(['onClick']);
 
@@ -14,7 +14,7 @@ function getDay(time, offset) {
 }
 
 function formatUnit(temp) {
-    const value = props.unit === 'c' ? temp - 273.15 : (1.8 * (temp - 273.15) + 32);
+    const value = props.scale === 'c' ? temp - 273.15 : (1.8 * (temp - 273.15) + 32);
     return Math.round(value);
 }
 

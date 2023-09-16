@@ -7,7 +7,7 @@ const props = defineProps([
     'timezone_offset',
     'temp',
     'feelsLike',
-    'unit',
+    'scale',
     'imgId',
     'weatherDis',
     'humidity',
@@ -31,8 +31,7 @@ function formatDate(date) {
 }
 
 function formatUnit(temp) {
-    const value = props.unit === 'c' ? temp - 273.15 : (1.8 * (temp - 273.15) + 32);
-    console.log(value);
+    const value = props.scale === 'c' ? temp - 273.15 : (1.8 * (temp - 273.15) + 32);
     return Math.round(value);
 }
 

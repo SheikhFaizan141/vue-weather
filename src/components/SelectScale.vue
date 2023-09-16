@@ -35,19 +35,12 @@ console.log(props.selected);
     font-weight: 500;
     padding: .5rem;
     cursor: pointer;
-    color: #4b4b4b;
-    /* outline: 1px solid red; */
+    color: var(--primary-color);
 }
 
-.w-scale-btn:hover {
-    transform: scale(0.96);
-    transition:
-        transform 500ms ease-in-out;
-    color: #4b4b4b;
-}
 
 .w-scale-active {
-    color: #a3a3a3;
+    color: gray;
     cursor: text;
 }
 </style>
