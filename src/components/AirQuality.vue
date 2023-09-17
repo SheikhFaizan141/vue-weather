@@ -34,7 +34,7 @@ watchEffect(async () => {
     const res = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
     const data = await res.json();
 
-    console.log(data);
+    // console.log(data);
 
     airQuality.value = data.list[0].main.aqi;
 

@@ -2,12 +2,29 @@
 import { ref } from "vue";
 
 const searchTag = ref();
+
+const list = ['one', 'two', 'three', 'four', 'five'];
+
+defineProps(['modelValue']);
+defineEmits(['clickOnLoc', 'update:modelValue']);
+
 const searchValue = ref('')
 
-defineEmits(['clickOnLoc', 'onSubmit']);
 
 function onSearchClick() {
     searchTag.value.focus()
+}
+
+function handleKeyDown(e) {
+    
+}
+
+function handleKeyUp(e) {
+    
+}
+
+function handlePlaceClick(e) {
+    
 }
 
 
@@ -19,32 +36,44 @@ function onSearchClick() {
         <div class="w-search-box">
             <i @click="onSearchClick">🔍</i>
             <div class="search-container">
-                <form @submit.prevent="$emit('onSubmit', searchValue)"> 
-                    <input ref="searchTag" type="search" id="w-search" placeholder="Search City" autocomplete="off" v-model="searchValue">
+                <form @submit.prevent="$emit('onSubmit', modelValue)"> 
+                    <input 
+                        ref="searchTag" 
+                        type="search" 
+                        id="w-search" 
+                        placeholder="Search City" 
+                        autocomplete="off" 
+                        :value="modelValue"
+                        @input="$emit('update:modelValue', $event.target.value)"
+                    >
                 </form>
             </div>
             <button @click="$emit('clickOnLoc')">
                 <i>Loc</i>
             </button>
         </div>
-        <!-- <ul>
-            <li>lorem5</li>
-            <li>lorem5</li>
-            <li>lorem5</li>
-            <li>lorem5</li>
-            <li>lorem5</li>
-        </ul> -->
+        <ul 
+        class="search-ul" 
+        v-if="modelValue"
+        >
+            <li
+            class="s-items"
+            v-for="name in list"
+            @keydown="handleKeyDown"
+            @keyup="handleKeyUp"
+            >
+            item {{ item }}
+            </li>
+        </ul>
     </div>
 </template>
 
 
 <style scoped>
 .search-container {
-    /* z-index: 5; */
+    color: #000;
     position: relative;
 
-    /* top: 0;
-    left: 0;*/
     z-index: 5; 
 
 }
@@ -53,18 +82,29 @@ function onSearchClick() {
     position: absolute;
     margin-block-start: .25rem;
     list-style: none;
-
-    background-color: #fff;
     width: 100%;
     background-color: #a0a0a0;
+    padding: 0;
+}
+
+.search-ul {
+    padding: 0;
+}
+
+.search-ul li {
+    list-style-type: none;
+    padding: .25rem;
+}
+.search-ul li:hover {
+    background: orange;
 }
 
 .w-search-box {
     display: flex;
+    align-items: center;
     margin-right: .5rem;
     column-gap: .25rem;
-
-    border: 1px solid black;
+    
     padding: .75rem .5rem;
     border-radius: 28px;
     background-color: #a0a0a0;
@@ -75,12 +115,17 @@ function onSearchClick() {
     border: 0;
     height: 100%;
     outline: none;
-    /* flex: 1; */
+    font-size: 1rem;
+    /* color: #d8d8d8; */
+    /* padding: .25rem 0; */
 }
 
 .search-container [type="search"]::placeholder {
-    color: #fff;
-    height: 2rem;
-    font-size: 1.05rem;
+    color: #000;
+    display: block;
+   
 }
+
+/*  */
+
 </style>

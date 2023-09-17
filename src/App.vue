@@ -12,6 +12,8 @@ import { onMounted, ref, watchEffect } from 'vue';
 // import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
+const searchText = ref('');
+
 
 const weatherData = ref(null);
 // const currentWeather = ref(null);
@@ -88,9 +90,8 @@ function getGeoCoordinates() {
   });
 }
 
-function onSearchSubmit(value) {
-  console.log('g');
-
+function handleSearchChange(value) {
+  
 }
 
 
@@ -128,18 +129,22 @@ function handleScaleClick(value) {
   <div class="container">
     <WeatherHeader v-if="!weatherData">
       <template #search-bar>
-        <SearchBar @click-on-loc="getGeoCoordinates" @on-submit="onSearchSubmit" />
+        <SearchBar @click-on-loc="getGeoCoordinates"  />
       </template>
 
       <template #select-scale>
         <SelectScale @on-scale-click="handleScaleClick" :selected="unit" />
+
       </template>
     </WeatherHeader>
 
     <template v-else>
       <WeatherHeader :location="place">
         <template #search-bar>
-          <SearchBar />
+          <SearchBar 
+           @click-on-loc="getGeoCoordinates" 
+           v-model="searchText"
+          />
         </template>
 
         <template #select-scale>
