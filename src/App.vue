@@ -90,10 +90,6 @@ function getGeoCoordinates() {
   });
 }
 
-function handleSearchChange(value) {
-  
-}
-
 
 function handleForecast(weather) {
 
@@ -120,6 +116,14 @@ function handleScaleClick(value) {
 }
 
 
+function setLocation(resLat, resLon) {
+  console.log(resLat, lat.value);
+  lat.value = resLat;
+  lon.value = resLon;
+
+  
+}
+
 </script>
 
 
@@ -143,7 +147,7 @@ function handleScaleClick(value) {
         <template #search-bar>
           <SearchBar 
            @click-on-loc="getGeoCoordinates" 
-           v-model="searchText"
+           @location="setLocation"
           />
         </template>
 

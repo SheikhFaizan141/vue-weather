@@ -30,7 +30,7 @@ const items = [{
     icon: ''
 }]
 
-console.log(props.info);
+// console.log(props.info);
 
 </script>
 

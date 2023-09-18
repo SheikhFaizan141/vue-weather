@@ -3,10 +3,6 @@
 const props = defineProps(['selected']);
 defineEmits(['onScaleClick']);
 
-console.log(props.selected);
-
-
-// const get = computed()
 
 </script>
 
