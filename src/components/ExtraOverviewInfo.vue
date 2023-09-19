@@ -59,7 +59,7 @@ const items = [{
 <style scoped>
 /* Additional */
 .cw-add-info {
-    background-color: #0f0f0f;
+    background-color: #3b4953;
     color: #fff;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -85,7 +85,7 @@ const items = [{
 }
 
 .add-value {
-    color: #c5c5c5;
+    color: #ffffff;
     font-weight: 500;
     font-size: 1.015rem;
 }

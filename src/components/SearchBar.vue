@@ -85,8 +85,9 @@ function handleSubmit() {
 
 <template>
     <div id="search-bar" class="search-container">
+
         <div class="w-search-box">
-            <i @click="onSearchClick">🔍</i>
+            <i @click="onSearchClick"><font-awesome-icon icon="magnifying-glass" /></i>
             <!-- <div > -->
             <form @submit.prevent="handleSubmit">
                 <input 
@@ -99,9 +100,9 @@ function handleSubmit() {
                 >
             </form>
             <!-- </div> -->
-            <button class="s-loc-btn" @click="$emit('clickOnLoc')">
-                <i>Loc</i>
-            </button>
+            <div class="s-loc-btn" @click="$emit('clickOnLoc')">
+                <i><font-awesome-icon icon="fa-solid fa-location-dot" /></i>
+            </div>
         </div>
         <ul 
          class="search-ul" v-if="isActive"
@@ -130,12 +131,13 @@ function handleSubmit() {
 
 <style scoped>
 .search-container {
-    color: #000;
+    color: whitesmoke;
     position: relative;
-    background-color: rgb(187, 187, 187);
+    background-color: #38444d;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     z-index: 5;
+    font-size: 1.05rem;
     /* padding: .5rem .5rem 0 .5rem; */
     /* padding-block-end: 10px; */
 
@@ -200,7 +202,7 @@ function handleSubmit() {
     border: 0;
     height: 100%;
     outline: none;
-    font-size: 1rem;
+    font-size: inherit;
 
     display: block;
     caret-color: rgb(255, 255, 255);
