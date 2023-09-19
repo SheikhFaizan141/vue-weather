@@ -4,15 +4,18 @@ import { ref,onMounted, watchEffect } from "vue";
 const searchTag = ref();
 
 const list = ref([]);
+const isActive = ref(false);
 
 onMounted(() => {
     document.addEventListener('click', (e) => {
-        console.dir(e.target);
+        // console.dir(e.target);
         if (!e.target.closest('#search-bar')) {
-            searchValue.value = '';
+            isActive.value = false;
             selected.value = -1;
         }
-        console.log(e.target.closest('#search-bar'));
+
+        console.log(isActive.value);
+        // console.log(e.target.closest('#search-bar'));
     })
 })
 
@@ -30,7 +33,7 @@ function onSearchClick() {
 }
 
 function handleKeyDown(index) {
-    selected.value = selected.value < list.value.length ? selected.value + 1 : 0;
+    selected.value = selected.value < list.value.length - 1 ? selected.value + 1 : -1;
 }
 
 function handleKeyUp(e) {
@@ -43,8 +46,7 @@ function handleClick(index) {
     let lon = list.value[index]['lon'];
 
     emit('location', lat, lon);
-
-    searchValue.value = '';
+    isActive.value = false;    
 }
 
 watchEffect(async () => {
@@ -59,6 +61,7 @@ watchEffect(async () => {
             const data = await res.json();
             list.value = data;
             // console.log(data);
+            isActive.value = list.value.length > 0 ? true : false;
 
         } catch (error) {
 
@@ -67,6 +70,16 @@ watchEffect(async () => {
 });
 
 
+function handleSubmit() {
+    if (selected.value > -1 && isActive) {
+        let lat = list.value[selected.value].lat;
+        let lon = list.value[selected.value].lon;
+        console.log(lat, lon);
+        emit('location',lat, lon);
+        isActive.value = false;
+    }
+    console.log(selected.value);
+}
 
 </script>
 
@@ -75,14 +88,14 @@ watchEffect(async () => {
         <div class="w-search-box">
             <i @click="onSearchClick">🔍</i>
             <!-- <div > -->
-            <form @submit.prevent="$emit('onSubmit', modelValue)">
+            <form @submit.prevent="handleSubmit">
                 <input 
                     ref="searchTag" type="search" 
                     id="w-search" placeholder="Search City" 
                     autocomplete="off"
                     v-model.trim="searchValue"
                     @keydown.down="handleKeyDown"
-                    @keydown.up="handleKeyUp"
+                    @keydown.up.prevent="handleKeyUp"
                 >
             </form>
             <!-- </div> -->
@@ -91,17 +104,15 @@ watchEffect(async () => {
             </button>
         </div>
         <ul 
-         class="search-ul" v-if="searchValue"
+         class="search-ul" v-if="isActive"
        
         >
             <li 
-             class="s-items" v-for="({ name, state, country }, index) in list" 
+             class="s-items" v-for="({ name, state, country, lat, lon }, index) in list" 
              @click.stop="handleClick(index)"
              :class="{'s-item-selected': index === selected}"
+             :key="name+state+country+lat+lon"
             >
-
-
-                <!-- <i></i> -->
                 <span class="s-item-city">
                     {{ name }},
                 </span>
@@ -111,8 +122,6 @@ watchEffect(async () => {
                 <span class="s-item-con">
                     {{ country }}
                 </span>
-
-
             </li>
         </ul>
     </div>

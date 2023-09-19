@@ -9,6 +9,7 @@ import SelectScale from './components/SelectScale.vue';
 
 
 import { onMounted, ref, watchEffect } from 'vue';
+import { RouterView } from 'vue-router';
 // import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
@@ -121,7 +122,7 @@ function setLocation(resLat, resLon) {
   lat.value = resLat;
   lon.value = resLon;
 
-  
+
 }
 
 </script>
@@ -133,11 +134,14 @@ function setLocation(resLat, resLon) {
   <div class="container">
     <WeatherHeader v-if="!weatherData">
       <template #search-bar>
-        <SearchBar @click-on-loc="getGeoCoordinates"  />
+        <SearchBar @click-on-loc="getGeoCoordinates" />
       </template>
 
       <template #select-scale>
-        <SelectScale @on-scale-click="handleScaleClick" :selected="unit" />
+        <SelectScale
+          @on-scale-click="handleScaleClick"
+          :selected="unit"
+        />
 
       </template>
     </WeatherHeader>
@@ -145,29 +149,52 @@ function setLocation(resLat, resLon) {
     <template v-else>
       <WeatherHeader :location="place">
         <template #search-bar>
-          <SearchBar 
-           @click-on-loc="getGeoCoordinates" 
-           @location="setLocation"
+          <SearchBar
+            @click-on-loc="getGeoCoordinates"
+            @location="setLocation"
           />
         </template>
 
         <template #select-scale>
-          <SelectScale @on-scale-click="handleScaleClick" :selected="unit" />
+          <SelectScale
+            @on-scale-click="handleScaleClick"
+            :selected="unit"
+          />
         </template>
       </WeatherHeader>
 
-      <WeatherOverview :timezone_offset="dt_offset" :sunrise="sunrise" :sunset="sunset" :temp="currentTemp"
-        :feels-like="currentFleesLike" :scale="unit" :img-id="imgId" :weather-dis="weatherDis" :humidity="humidity"
-        :wind-speed="windSpeed" :pressure="pressure" :uv="uv" />
+      <WeatherOverview
+        :timezone_offset="dt_offset"
+        :sunrise="sunrise"
+        :sunset="sunset"
+        :temp="currentTemp"
+        :feels-like="currentFleesLike"
+        :scale="unit"
+        :img-id="imgId"
+        :weather-dis="weatherDis"
+        :humidity="humidity"
+        :wind-speed="windSpeed"
+        :pressure="pressure"
+        :uv="uv"
+      />
 
-      <WeatherForecast :scale="unit" :forecast="forecast" :time-offset="dt_offset" @on-click="handleForecast" />
+    <WeatherForecast
+      :scale="unit"
+      :forecast="forecast"
+      :time-offset="dt_offset"
+      @on-click="handleForecast"
+    />
 
-      <AirQuality :lat="lat" :lon="lon" />
+    <AirQuality
+      :lat="lat"
+      :lon="lon"
+    />
 
-      <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13218.866539167077!2d74.81561945!3d34.076777549999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1694682043392!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-    </template>
+    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13218.866539167077!2d74.81561945!3d34.076777549999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1694682043392!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
+  </template>
 
-  </div>
-</template>
+</div>
+
+<!-- <RouterView /> --></template>
 
 <style scoped></style>
