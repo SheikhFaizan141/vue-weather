@@ -6,36 +6,34 @@ const list = ref([]);
 const isActive = ref(false);
 const searchText = ref('')
 const selected = ref(-1);
-let count = 0;
 
 const emit = defineEmits(['clickOnLoc', 'location']);
 
 
-watchEffect(async () => {
+watchEffect(() => {
+    if (searchText.value === '' && list.value.length > 0) {
+        list.value = [];
+        isActive.value = false;
+    }
+});
+
+async function handleInput() {
     if (searchText.value !== '') {
-   
         try {
             const res = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${searchText.value}&limit=5&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
 
             if (!res.ok) {
-                console.log('error');
+                throw new Error("Network response was not OK");
             }
 
             const data = await res.json();
             list.value = data;
             isActive.value = list.value.length > 0 ? true : false;
-            console.log('in', searchText.value, count++);
         } catch (error) {
-
+            console.log(error);
         }
-    } else if(searchText.value === ''){
-        list.value = [];
-        isActive.value = false;
-        console.log('out' ,searchText.value, count++);
     }
-
-});
-
+}
 
 function onSearchClick() {
     searchTag.value.focus();
@@ -108,7 +106,8 @@ function handleSubmit() {
                     id="w-search"
                     placeholder="Search City"
                     autocomplete="off"
-                    v-model="searchText"
+                    v-model.trim="searchText"
+                    @input="handleInput"
                     @keydown.down="arrowDown"
                     @keydown.prevent.up="arrowUp"
                     @focus="handleFouse"
@@ -192,7 +191,6 @@ function handleSubmit() {
 }
 
 .search-ul> :last-child {
-    /* padding-block-end: 0; */
     margin-block-end: 0;
     border-block-end: 0;
 }
