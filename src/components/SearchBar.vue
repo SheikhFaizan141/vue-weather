@@ -39,11 +39,11 @@ function onSearchClick() {
     searchTag.value.focus();
 }
 
-function arrowDown(index) {
+function arrowDown() {
     selected.value = selected.value < list.value.length - 1 ? selected.value + 1 : -1;
 }
 
-function arrowUp(e) {
+function arrowUp() {
     selected.value = selected.value > -1 ? selected.value - 1 : list.value.length - 1;
 }
 
@@ -65,7 +65,10 @@ function handleBlur() {
 }
 
 
-function handleClick(index) {
+function handleClick(e, index) {
+    // e.stopPropagation()
+    e.stopImmediatePropagation()
+    console.log('click');
     let lat = list.value[index]['lat'];
     let lon = list.value[index]['lon'];
 
@@ -93,19 +96,19 @@ function handleSubmit() {
         id="search-bar"
         class="search-container"
         :data-expand="isActive"
+
     >
 
         <div class="w-search-box">
             <i @click="onSearchClick">
                 <font-awesome-icon icon="magnifying-glass" />
             </i>
-            <form @submit.prevent="handleSubmit">
+            <form autocomplete="off" @submit.prevent="handleSubmit">
                 <input
                     ref="searchTag"
                     type="search"
                     id="w-search"
                     placeholder="Search City"
-                    autocomplete="off"
                     v-model.trim="searchText"
                     @input="handleInput"
                     @keydown.down="arrowDown"
@@ -128,7 +131,7 @@ function handleSubmit() {
             <li
                 class="s-items"
                 v-for="({ name, state, country, lat, lon }, index) in list"
-                @click.stop="handleClick(index)"
+                @mousedown.left="handleClick($event, index)"
                 :class="{ 's-item-selected': index === selected }"
                 :key="name + state + country + lat + lon"
             >

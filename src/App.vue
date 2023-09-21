@@ -8,16 +8,12 @@ import SearchBar from './components/SearchBar.vue';
 import SelectScale from './components/SelectScale.vue';
 
 
-import { onMounted, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
 // import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
-const searchText = ref('');
-
-
 const weatherData = ref(null);
-// const currentWeather = ref(null);
 const lat = ref(localStorage.getItem('lat'));
 const lon = ref(localStorage.getItem('lon'));
 const place = ref(null);
@@ -34,33 +30,23 @@ const humidity = ref('');
 const windSpeed = ref('');
 const pressure = ref('');
 const uv = ref('');
+
 // Weather Forecast
 const forecast = ref('');
 
+async function fetchData(url, init = undefined) {
+  const res = await fetch(url, init);
 
+  if (!res.ok) {
+    throw new Error('Network Error');
+  }
 
+  return await res.json();
 
-// async function fetchWeather() {
-
-//   return data;
-// }
-
-async function getLocationName() {
-  const res = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat.value}&lon=${lon.value}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`)
-  const data = await res.json();
-  // place.value = { country, name } = data[0];
-  const { country, name } = data[0];
-  place.value = { country, name }
 }
 
-watchEffect(async () => {
-  if (lat.value !== null && lon.value !== null) {
-    const res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat.value}&lon=${lon.value}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
-
-    const data = await res.json();
+function setWeather(data) {
     weatherData.value = data;
-
-
     sunrise.value = data['current']['sunrise'];
     sunset.value = data['current']['sunset'];
     currentTemp.value = data['current']['temp'];
@@ -77,7 +63,25 @@ watchEffect(async () => {
 
     forecast.value = data['daily'];
     // console.log(data);
-    getLocationName();
+}
+
+function setAddress(data) {
+  const { country, name } = data[0];
+  place.value = { country, name }
+}
+
+watchEffect(async () => {
+  if (lat.value !== null && lon.value !== null) {
+    let weather = fetchData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat.value}&lon=${lon.value}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
+    let location = fetchData(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat.value}&lon=${lon.value}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
+
+    const [weatherData, locationData] = await Promise.all([weather, location])
+      .catch((err) => {
+        console.error(err);
+      })
+
+    setWeather(weatherData);
+    setAddress(locationData);
   }
 })
 
@@ -118,11 +122,8 @@ function handleScaleClick(value) {
 
 
 function setLocation(resLat, resLon) {
-  console.log(resLat, lat.value);
   lat.value = resLat;
   lon.value = resLon;
-
-
 }
 
 </script>
@@ -178,23 +179,23 @@ function setLocation(resLat, resLon) {
         :uv="uv"
       />
 
-    <WeatherForecast
-      :scale="unit"
-      :forecast="forecast"
-      :time-offset="dt_offset"
-      @on-click="handleForecast"
-    />
+      <WeatherForecast
+        :scale="unit"
+        :forecast="forecast"
+        :time-offset="dt_offset"
+        @on-click="handleForecast"
+      />
 
-    <AirQuality
-      :lat="lat"
-      :lon="lon"
-    />
+      <AirQuality
+        :lat="lat"
+        :lon="lon"
+      />
 
-    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13218.866539167077!2d74.81561945!3d34.076777549999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1694682043392!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
-  </template>
+    </template>
 
-</div>
+  </div>
 
-<!-- <RouterView /> --></template>
+  <!-- <RouterView /> -->
+</template>
 
 <style scoped></style>
