@@ -2,6 +2,7 @@
 import { ref, watchEffect } from "vue";
 
 const searchTag = ref();
+// const listRefs = ref();
 const list = ref([]);
 const isActive = ref(false);
 const searchText = ref('')
@@ -29,6 +30,7 @@ async function handleInput() {
             const data = await res.json();
             list.value = data;
             isActive.value = list.value.length > 0 ? true : false;
+            selected.value = 0;
         } catch (error) {
             console.log(error);
         }
@@ -54,20 +56,28 @@ function handleFouse() {
     }
 }
 
-function handleBlur() {
+function handleBlur(e) {
     if (searchText.value === '') {
         list.value = [];
     }
 
+    const ele = e.relatedTarget; 
 
-    isActive.value = false;
+    if (ele !== null) {
+        let closestEle = ele.closest('#search-bar');
+        if (closestEle === null) {
+            isActive.value = false;
+        }
+    } else {
+        isActive.value = false;
+    }
+
     selected.value = -1;
 }
 
 
 function handleClick(e, index) {
-    // e.stopPropagation()
-    e.stopImmediatePropagation()
+
     console.log('click');
     let lat = list.value[index]['lat'];
     let lon = list.value[index]['lon'];
@@ -81,12 +91,12 @@ function handleSubmit() {
     if (selected.value > -1 && isActive) {
         let lat = list.value[selected.value].lat;
         let lon = list.value[selected.value].lon;
-        // console.log(lat, lon);
 
         emit('location', lat, lon);
         isActive.value = false;
+        // Take focuse out of search input
+        searchTag.value.blur()
     }
-    // console.log(selected.value);
 }
 
 </script>
@@ -96,14 +106,13 @@ function handleSubmit() {
         id="search-bar"
         class="search-container"
         :data-expand="isActive"
-
+        tabindex="-1"
     >
-
-        <div class="w-search-box">
+        <div class="w-search-box" tabindex="-">
             <i @click="onSearchClick">
                 <font-awesome-icon icon="magnifying-glass" />
             </i>
-            <form autocomplete="off" @submit.prevent="handleSubmit">
+            <form id="search-form" autocomplete="off" @submit.prevent="handleSubmit">
                 <input
                     ref="searchTag"
                     type="search"
@@ -111,10 +120,10 @@ function handleSubmit() {
                     placeholder="Search City"
                     v-model.trim="searchText"
                     @input="handleInput"
-                    @keydown.down="arrowDown"
-                    @keydown.prevent.up="arrowUp"
                     @focus="handleFouse"
                     @blur="handleBlur"
+                    @keydown.down="arrowDown"
+                    @keydown.prevent.up="arrowUp"
                 >
             </form>
             <div
@@ -131,9 +140,10 @@ function handleSubmit() {
             <li
                 class="s-items"
                 v-for="({ name, state, country, lat, lon }, index) in list"
-                @mousedown.left="handleClick($event, index)"
+                @click="handleClick($event, index)"
                 :class="{ 's-item-selected': index === selected }"
                 :key="name + state + country + lat + lon"
+                tabindex="-1"
             >
                 <span class="s-item-city">
                     {{ name }},
@@ -149,6 +159,7 @@ function handleSubmit() {
                 </span>
             </li>
         </ul>
+
     </div>
 </template>
 
