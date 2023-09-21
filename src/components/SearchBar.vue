@@ -2,7 +2,7 @@
 import { ref, watchEffect } from "vue";
 
 const searchTag = ref();
-// const listRefs = ref();
+const listRefs = ref();
 const list = ref([]);
 const isActive = ref(false);
 const searchText = ref('')
@@ -37,10 +37,6 @@ async function handleInput() {
     }
 }
 
-function onSearchClick() {
-    searchTag.value.focus();
-}
-
 function arrowDown() {
     selected.value = selected.value < list.value.length - 1 ? selected.value + 1 : -1;
 }
@@ -56,23 +52,23 @@ function handleFouse() {
     }
 }
 
+
 function handleBlur(e) {
     if (searchText.value === '') {
         list.value = [];
     }
 
-    const ele = e.relatedTarget; 
-
+    let ele = e.relatedTarget;
     if (ele !== null) {
-        let closestEle = ele.closest('#search-bar');
-        if (closestEle === null) {
+        let isList = listRefs.value.includes(ele);
+        if (!isList) {
             isActive.value = false;
-        }
+        } 
     } else {
         isActive.value = false;
     }
-
     selected.value = -1;
+
 }
 
 
@@ -108,11 +104,18 @@ function handleSubmit() {
         :data-expand="isActive"
         tabindex="-1"
     >
-        <div class="w-search-box" tabindex="-">
-            <i @click="onSearchClick">
+        <div
+            class="w-search-box"
+            tabindex="-"
+        >
+            <i>
                 <font-awesome-icon icon="magnifying-glass" />
             </i>
-            <form id="search-form" autocomplete="off" @submit.prevent="handleSubmit">
+            <form
+                id="search-form"
+                autocomplete="off"
+                @submit.prevent="handleSubmit"
+            >
                 <input
                     ref="searchTag"
                     type="search"
@@ -144,6 +147,7 @@ function handleSubmit() {
                 :class="{ 's-item-selected': index === selected }"
                 :key="name + state + country + lat + lon"
                 tabindex="-1"
+                ref="listRefs"
             >
                 <span class="s-item-city">
                     {{ name }},
@@ -251,5 +255,4 @@ function handleSubmit() {
     color: rgb(197, 195, 195);
     font-size: 1.015rem;
 
-}
-</style>
+}</style>
