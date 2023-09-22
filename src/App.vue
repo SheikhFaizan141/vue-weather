@@ -10,6 +10,7 @@ import SelectScale from './components/SelectScale.vue';
 
 import { ref, watchEffect } from 'vue';
 import { RouterView } from 'vue-router';
+import WeatherChart from './components/WeatherChart.vue';
 // import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
@@ -33,6 +34,8 @@ const uv = ref('');
 
 // Weather Forecast
 const forecast = ref('');
+// Hourly Forecast
+const hourly = ref();
 
 async function fetchData(url, init = undefined) {
   const res = await fetch(url, init);
@@ -63,6 +66,9 @@ function setWeather(data) {
 
     forecast.value = data['daily'];
     // console.log(data);
+
+    // Hourly Weather
+    hourly.value = data['hourly'];
 }
 
 function setAddress(data) {
@@ -82,6 +88,7 @@ watchEffect(async () => {
 
     setWeather(weatherData);
     setAddress(locationData);
+    // console.log(lat.value, lon.value);
   }
 })
 
@@ -179,6 +186,14 @@ function setLocation(resLat, resLon) {
         :uv="uv"
       />
 
+      <div class="w-chart-box">
+        <WeatherChart 
+         :tz-offset="dt_offset"
+         :hourly-forecast="hourly"
+         :unit="unit"
+        />
+      </div>
+
       <WeatherForecast
         :scale="unit"
         :forecast="forecast"
@@ -198,4 +213,10 @@ function setLocation(resLat, resLon) {
   <!-- <RouterView /> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+.w-chart-box {
+  background-color: aliceblue;
+  padding: .75rem;
+}
+
+</style>
