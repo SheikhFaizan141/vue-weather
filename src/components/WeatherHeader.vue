@@ -1,18 +1,36 @@
 <script setup>
-// defineEmits(['click-on-loc'])
 defineProps(['location'])
+const days = []
+function showDate() {
+    let time = new Date();
+    const options = {
+        weekday: "long",
+        hour: "numeric",
+        minute: "numeric",
+    };
+            
+    // console.log(day);
+    return new Intl.DateTimeFormat("en-US", options).format(time);
+}
+
 
 </script>
 
 <template>
     <header class="w-header">
         <nav class="nav">
-            <div v-if="location" class="header-left">
-                <h1 class="w-h1">{{ location.name }}, {{ location?.country }}</h1>
-                <p class="w-time"><time datetime="">Monday, 3:15 pm</time></p> 
+            <div
+                v-if="location"
+                class="header-left"
+            >
+                <h1 class="w-h1">{{ location.name }}, {{ location.country }}</h1>
+                <p class="w-time"><time datetime="">{{ showDate() }}</time></p>
             </div>
-            <div class="header-right">
-                <slot name="search-bar" ></slot>
+            <div
+                class="header-right"
+                :class="{ 'header-right-sb': !location }"
+            >
+                <slot name="search-bar"></slot>
                 <slot name="select-scale"></slot>
             </div>
         </nav>
@@ -34,7 +52,7 @@ defineProps(['location'])
 
 .header-left {
     flex: 1;
-    
+
 }
 
 .header-left h1 {
@@ -42,7 +60,7 @@ defineProps(['location'])
     margin-bottom: .5rem;
 }
 
-.header-left > p {
+.header-left>p {
     font-size: 1.15rem;
     margin-bottom: .5rem;
 }
@@ -51,5 +69,10 @@ defineProps(['location'])
     display: flex;
     column-gap: .25rem;
     align-items: center;
+}
+
+.header-right-sb {
+    flex: 1;
+    justify-content: space-between;
 }
 </style>

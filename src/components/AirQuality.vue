@@ -1,10 +1,10 @@
 <script setup>
 import { ref, watchEffect, computed } from 'vue'
 
-const props = defineProps(['lat', 'lon']);
+const props = defineProps(['lat', 'lon', 'timeOffset']);
 const airQuality = ref(null);
 const components = ref({});
-const aqiDiscription = ref('');
+const dt = ref('');
 // const time = ref('');
 
 const renderSub = {
@@ -20,11 +20,31 @@ const renderSub = {
 
 const range = new Map([
     [1, ['Good', 'green']],
-    [2, ['Fair', 'green']],
-    [3, ['Moderate', '#2cbf2c']],
-    [4, ['Poor', 'orangered']],
-    [5, ['Very Poor', '#ff2f2f']],
+    [2, ['Fair', 'greenyellow']],
+    [3, ['Moderate', 'orangered']],
+    [4, ['Poor', 'red']],
+    [5, ['Very Poor', 'maroon']],
 ])
+
+const disAirQuality = new Map([
+    [1, 'Air quality is satisfactory, and air pollution poses little or no risk.'],
+    [2, 'Air quality is acceptable. However, there may be a risk for some people, particularly those who are unusually sensitive to air pollution.'],
+    [3, 'Members of sensitive groups may experience health effects. The general public is less likely to be affected.'],
+    [4, 'Some members of the general public may experience health effects; members of sensitive groups may experience more serious health effects'],
+    [5, 'Health warning of emergency conditions: everyone is more likely to be affected.']
+])
+
+function formatDate(date) {
+    let hours = date.getUTCHours();
+    let minutes = date.getUTCMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
+
+    return strTime;
+}
 
 
 watchEffect(async () => {
@@ -35,26 +55,33 @@ watchEffect(async () => {
     const data = await res.json();
 
     // console.log(data);
-
+    dt.value = data.list[0].dt
     airQuality.value = data.list[0].main.aqi;
 
     components.value = data.list[0].components;
 })
+
 
 </script>
 
 <template>
     <h1 v-if="!airQuality">Loading</h1>
 
-    <div v-else class="aq-box">
+    <div
+        v-else
+        class="aq-box"
+    >
         <hgroup class="aq-heading-box">
             <h2 class="aq-heading">Air Quality Index</h2>
-            <p class="aq-heading-info">Published at <time datetime="">7:49 pm</time></p>
+            <p class="aq-heading-info">Published at <time datetime="">{{ formatDate(new Date((dt + timeOffset) * 1000)) }}</time></p>
         </hgroup>
 
-        <div class="aq-index" :style="{ color: range.get(airQuality)[1] }">
+        <div
+            class="aq-index"
+            :style="{ color: range.get(airQuality)[1] }"
+        >
             <div class="aq-index-box1">
-                <span class="aq-value">52</span>
+                <span class="aq-value">{{ Math.trunc(components['pm2_5']) }}</span>
                 <span class="aq-desc">{{ range.get(airQuality)[0] }}</span>
             </div>
             <!-- <div class="aq-index-box2" style="color: black;">
@@ -64,14 +91,18 @@ watchEffect(async () => {
         </div>
 
         <div class="aq-particles">
-            <p class="aq-particles-dis">Air quality is good. A perfect day for a walk!</p>
+            <p class="aq-particles-dis">{{ disAirQuality.get(airQuality) }}</p>
 
             <div class="aq-pollutants-box">
 
                 <h2 class="aq-pollutants-heading">All Pollutants</h2>
 
                 <div class="aq-particles-box">
-                    <div :style="{ background: range.get(airQuality)[1] }" :key="name" v-for="(value, name) in components">
+                    <div
+                        :style="{ background: range.get(airQuality)[1] }"
+                        :key="name"
+                        v-for="(value, name) in components"
+                    >
                         <p class="aq-paritcles-value">{{ Number.parseFloat(value).toFixed(1) }}</p>
                         <p class="aq-paritcles-name">
                             {{ renderSub[name]['name'] }}
@@ -164,14 +195,14 @@ watchEffect(async () => {
 .aq-particles-box {
     display: flex;
     column-gap: 0.35rem;
-    
+
     padding-block: .5rem;
     overflow-x: auto;
     scroll-snap-type: mandatory;
 
 }
 
-.aq-particles-box > div {
+.aq-particles-box>div {
     font-size: 1.25rem;
     text-align: center;
     flex: 1;
@@ -179,10 +210,11 @@ watchEffect(async () => {
 
     padding-inline: 0.5rem;
     padding-block: 0.25rem;
-   
+
     color: #000000;
     border-radius: 3px;
 }
+
 /* .aq-particles-box > div::after { 
   content: url('../../media/examples/firefox-logo.svg');
   display: inline-block;
@@ -213,8 +245,4 @@ watchEffect(async () => {
 .aq-pollutants-heading {
     font-size: 1.95rem;
     font-weight: 500;
-}
-
-
-
-</style>
+}</style>

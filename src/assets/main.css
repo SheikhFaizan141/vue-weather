@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 :root {
-    --primary-bg-color: #fff;
-    --primary-color: #000000;
+    --p-bg-color: #fff;
+    --p-color: #000000;
     --main-color: #fff;
     /* --margin- */
     --box-shadow: rgba(50,50,93,.25) 0px 13px 27px -5px,rgba(0,0,0,.3) 0px 8px 16px -8px;
@@ -32,6 +32,7 @@ body {
     background-size: cover;
 }
 
+
 .container {
     display: flex;
     flex-direction: column;
@@ -44,11 +45,16 @@ body {
       
 }
 
+.container > div {
+    box-shadow: var(--box-shadow);
+    padding: 1rem;
+    border-radius: 4px;
+}
 /* Header */
 
-
+/* 
 header {
-    /* position: sticky;
+    position: sticky;
     z-index: 5;
-    top: 0; */
-}
+    top: 0;
+} */

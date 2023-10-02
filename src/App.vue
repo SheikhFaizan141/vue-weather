@@ -9,7 +9,7 @@ import SelectScale from './components/SelectScale.vue';
 
 
 import { ref, watchEffect } from 'vue';
-import { RouterView } from 'vue-router';
+// import { RouterView } from 'vue-router';
 // import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
@@ -46,23 +46,23 @@ async function fetchData(url, init = undefined) {
 }
 
 function setWeather(data) {
-    weatherData.value = data;
-    sunrise.value = data['current']['sunrise'];
-    sunset.value = data['current']['sunset'];
-    currentTemp.value = data['current']['temp'];
-    currentFleesLike.value = data['current']['feels_like'];
-    dt_offset.value = data['timezone_offset'];
-    imgId.value = data['current']['weather'][0].icon;
-    weatherDis.value = data['current']['weather'][0]['description'];
+  weatherData.value = data;
+  sunrise.value = data['current']['sunrise'];
+  sunset.value = data['current']['sunset'];
+  currentTemp.value = data['current']['temp'];
+  currentFleesLike.value = data['current']['feels_like'];
+  dt_offset.value = data['timezone_offset'];
+  imgId.value = data['current']['weather'][0].icon;
+  weatherDis.value = data['current']['weather'][0]['description'];
 
-    // Additional Values
-    humidity.value = data['current']['humidity'];
-    windSpeed.value = data['current']['wind_speed'];
-    pressure.value = data['current']['pressure'];
-    uv.value = data['current']['uvi'];
+  // Additional Values
+  humidity.value = data['current']['humidity'];
+  windSpeed.value = data['current']['wind_speed'];
+  pressure.value = data['current']['pressure'];
+  uv.value = data['current']['uvi'];
 
-    forecast.value = data['daily'];
-    // console.log(data);
+  forecast.value = data['daily'];
+  // console.log(data);
 }
 
 function setAddress(data) {
@@ -72,16 +72,17 @@ function setAddress(data) {
 
 watchEffect(async () => {
   if (lat.value !== null && lon.value !== null) {
-    let weather = fetchData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat.value}&lon=${lon.value}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
-    let location = fetchData(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat.value}&lon=${lon.value}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
+    const weather = fetchData(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat.value}&lon=${lon.value}&exclude=minutely&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
+    const location = fetchData(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat.value}&lon=${lon.value}&limit=1&appid=d5cf16c9a343a988a0ba9ec47620dc88`);
 
-    const [weatherData, locationData] = await Promise.all([weather, location])
-      .catch((err) => {
-        console.error(err);
-      })
+    try {
+      const [weatherRes, locationRes] = await Promise.all([weather, location])
+      setWeather(weatherRes);
+      setAddress(locationRes);
+    } catch (err) {
+      console.error(err);
+    }
 
-    setWeather(weatherData);
-    setAddress(locationData);
   }
 })
 
@@ -189,6 +190,7 @@ function setLocation(resLat, resLon) {
       <AirQuality
         :lat="lat"
         :lon="lon"
+        :time-offset="dt_offset"
       />
 
     </template>
