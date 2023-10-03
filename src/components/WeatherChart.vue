@@ -22,7 +22,7 @@ const props = defineProps(['tzOffset', 'hourlyForecast', 'unit']);
 function time(value) {
     let res = new Date((value) * 1000);
 
-    console.log(res);
+    // console.log(res);
 }
 
 function getData() {

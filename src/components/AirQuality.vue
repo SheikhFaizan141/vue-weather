@@ -73,7 +73,8 @@ watchEffect(async () => {
     >
         <hgroup class="aq-heading-box">
             <h2 class="aq-heading">Air Quality Index</h2>
-            <p class="aq-heading-info">Published at <time datetime="">{{ formatDate(new Date((dt + timeOffset) * 1000)) }}</time></p>
+            <p class="aq-heading-info">Published at <time datetime="">{{ formatDate(new Date((dt + timeOffset) * 1000))
+            }}</time></p>
         </hgroup>
 
         <div
@@ -245,4 +246,5 @@ watchEffect(async () => {
 .aq-pollutants-heading {
     font-size: 1.95rem;
     font-weight: 500;
-}</style>
+}
+</style>

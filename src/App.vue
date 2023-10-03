@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watchEffect } from 'vue';
 // import { RouterLink, RouterView } from 'vue-router'
 import WeatherHeader from './components/WeatherHeader.vue';
 import WeatherOverview from './components/WeatherOverview.vue';
@@ -6,12 +7,7 @@ import WeatherForecast from './components/WeatherForecast.vue';
 import AirQuality from './components/AirQuality.vue';
 import SearchBar from './components/SearchBar.vue';
 import SelectScale from './components/SelectScale.vue';
-
-
-import { ref, watchEffect } from 'vue';
-// import { RouterView } from 'vue-router';
 import WeatherChart from './components/WeatherChart.vue';
-// import ExtraOverviewInfo from './components/ExtraOverviewInfo.vue';
 
 const unit = ref(localStorage.getItem('unit') ?? 'c');
 const weatherData = ref(null);
@@ -64,11 +60,11 @@ function setWeather(data) {
   pressure.value = data['current']['pressure'];
   uv.value = data['current']['uvi'];
 
-    forecast.value = data['daily'];
-    // console.log(data);
+  forecast.value = data['daily'];
+  // console.log(data);
 
-    // Hourly Weather
-    hourly.value = data['hourly'];
+  // Hourly Weather
+  hourly.value = data['hourly'];
 }
 
 function setAddress(data) {
@@ -134,9 +130,6 @@ function setLocation(resLat, resLon) {
 
 </script>
 
-
-
-
 <template>
   <div class="container">
     <WeatherHeader v-if="!weatherData">
@@ -185,22 +178,21 @@ function setLocation(resLat, resLon) {
         :uv="uv"
       />
 
-      
       <WeatherForecast
-      :scale="unit"
-      :forecast="forecast"
-      :time-offset="dt_offset"
-      @on-click="handleForecast"
+        :scale="unit"
+        :forecast="forecast"
+        :time-offset="dt_offset"
+        @on-click="handleForecast"
       />
-      
+
       <div class="w-chart-box">
-        <WeatherChart 
-         :tz-offset="dt_offset"
-         :hourly-forecast="hourly"
-         :unit="unit"
+        <WeatherChart
+          :tz-offset="dt_offset"
+          :hourly-forecast="hourly"
+          :unit="unit"
         />
       </div>
-      
+
       <AirQuality
         :lat="lat"
         :lon="lon"
@@ -208,7 +200,6 @@ function setLocation(resLat, resLon) {
       />
 
     </template>
-
   </div>
 
   <!-- <RouterView /> -->
@@ -219,5 +210,4 @@ function setLocation(resLat, resLon) {
   background-color: aliceblue;
   padding: .75rem;
 }
-
 </style>

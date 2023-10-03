@@ -1,6 +1,6 @@
 <script setup>
-defineProps(['location'])
-const days = []
+defineProps(['location']);
+
 function showDate() {
     let time = new Date();
     const options = {
@@ -8,7 +8,7 @@ function showDate() {
         hour: "numeric",
         minute: "numeric",
     };
-            
+
     // console.log(day);
     return new Intl.DateTimeFormat("en-US", options).format(time);
 }

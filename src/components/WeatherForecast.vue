@@ -20,7 +20,7 @@ function formatUnit(temp) {
 }
 
 function handleSelect(item, index) {
-    
+
 
     emit('onClick', item);
     selected.value = index;
@@ -31,28 +31,36 @@ function handleSelect(item, index) {
 </script>
 
 <template>
-     <!-- <h2>Weather Forecast</h2> -->
+    <!-- <h2>Weather Forecast</h2> -->
     <div class="wf-box">
-       
-        <div 
-         class="wf-info" 
-         :key="item['dt']" 
-         v-for="(item, index) in forecast"
-         @click="() => handleSelect(item, index)"
-         :class="selected === index ? 'wf-selected' : ''"
+
+        <div
+            class="wf-info"
+            :key="item['dt']"
+            v-for="(item, index) in forecast"
+            @click="() => handleSelect(item, index)"
+            :class="selected === index ? 'wf-selected' : ''"
         >
             <h4 class="wf-day">{{ getDay(item['dt'], props.timeOffset) }}</h4>
             <div class="res-img">
-                <img width="50" height="50" :src="`https://openweathermap.org/img/wn/${item['weather'][0]['icon']}@2x.png`" alt="">
+                <img
+                    width="50"
+                    height="50"
+                    :src="`https://openweathermap.org/img/wn/${item['weather'][0]['icon']}@2x.png`"
+                    alt=""
+                >
             </div>
-            
+
             <div class="wf-temp">
-                <span title="max temp" class="wf-max-temp">{{ formatUnit(item['temp']['max']) }}°</span>
-                <span class="wf-min-temp">{{formatUnit(item['temp']['min'])}}°</span>
+                <span
+                    title="max temp"
+                    class="wf-max-temp"
+                >{{ formatUnit(item['temp']['max']) }}°</span>
+                <span class="wf-min-temp">{{ formatUnit(item['temp']['min']) }}°</span>
             </div>
         </div>
-   
-   </div>
+
+    </div>
 </template>
 
 <style scoped>
@@ -78,6 +86,7 @@ function handleSelect(item, index) {
     border-radius: 2px;
     cursor: pointer;
 }
+
 .wf-info:hover .wf-temp {
     color: #fff;
 }
@@ -103,7 +112,7 @@ function handleSelect(item, index) {
     background-color: #5e5e5e;
     color: #fff;
 }
-.wf-selected .wf-temp{
+
+.wf-selected .wf-temp {
     color: #fff;
-}
-</style>
+}</style>

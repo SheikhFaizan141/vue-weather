@@ -30,8 +30,6 @@ const items = [{
     icon: ''
 }]
 
-// console.log(props.info);
-
 </script>
 
 <template>
@@ -39,19 +37,27 @@ const items = [{
 
         <div class="add-box">
             <p class="add-heading ">Humidity</p>
-            <p class="add-value"><i class="icon add-icon"><IconHumidity/></i> 30%</p>
+            <p class="add-value"><i class="icon add-icon">
+                    <IconHumidity />
+                </i> 30%</p>
         </div>
         <div class="add-box">
             <p class="add-heading ">Wind Speed</p>
-            <p class="add-value"><i class="icon add-icon"><IconWind /></i> {{ windSpeed }} km/h</p>
+            <p class="add-value"><i class="icon add-icon">
+                    <IconWind />
+                </i> {{ windSpeed }} km/h</p>
         </div>
         <div class="add-box">
             <p class="add-heading ">Pressure</p>
-            <p class="add-value"><i class="icon add-icon"><IconPressure /></i> {{ pressure }} hPa</p>
+            <p class="add-value"><i class="icon add-icon">
+                    <IconPressure />
+                </i> {{ pressure }} hPa</p>
         </div>
         <div class="add-box">
             <p class="add-heading ">UV Index</p>
-            <p class="add-value"><i class="icon add-icon"><IconUv /></i> {{ uv }}</p>
+            <p class="add-value"><i class="icon add-icon">
+                    <IconUv />
+                </i> {{ uv }}</p>
         </div>
     </div>
 </template>
@@ -103,7 +109,5 @@ const items = [{
     fill: rgb(255, 255, 255);
     width: 100%;
     height: 100%;
-}
-
-</style>
+}</style>
 

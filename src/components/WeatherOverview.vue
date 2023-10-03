@@ -46,7 +46,7 @@ function formatUnit(temp) {
             <h2 class="cw-heading mb-1">Weather</h2>
             <p class="mb-1">What's the weather.</p>
         </hgroup>
-        
+
         <div class="cw-sun">
             <div class="cw-sun-rise">
                 <h3>Sunrise</h3>
@@ -60,8 +60,13 @@ function formatUnit(temp) {
 
         <div class="cw-info">
             <div class="cw-img-div">
-                <img class="cw-img" width="100" height="100" :src="`https://openweathermap.org/img/wn/${imgId}@2x.png`"
-                    alt="">
+                <img
+                    class="cw-img"
+                    width="100"
+                    height="100"
+                    :src="`https://openweathermap.org/img/wn/${imgId}@2x.png`"
+                    alt=""
+                >
             </div>
             <div class="cw-temp-value">
                 <p class="cw-temp-heading mb-1">{{ weatherDis }}</p>
@@ -73,11 +78,11 @@ function formatUnit(temp) {
         </div>
 
 
-        <ExtraOverviewInfo 
-        :humidity="humidity"
-        :wind-speed="windSpeed"
-        :pressure="pressure"
-        :uv="uv"
+        <ExtraOverviewInfo
+            :humidity="humidity"
+            :wind-speed="windSpeed"
+            :pressure="pressure"
+            :uv="uv"
         />
         <!-- <slot></slot> -->
     </div>
@@ -166,5 +171,4 @@ function formatUnit(temp) {
 
 /* .cw-e */
 
-/* Additional Slot Syle */
-</style>
+/* Additional Slot Syle */</style>

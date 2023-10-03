@@ -32,7 +32,7 @@ async function handleInput() {
             isActive.value = list.value.length > 0 ? true : false;
             selected.value = 0;
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 }
@@ -74,7 +74,7 @@ function handleBlur(e) {
 
 function handleClick(e, index) {
 
-    console.log('click');
+    // console.log('click');
     let lat = list.value[index]['lat'];
     let lon = list.value[index]['lon'];
 

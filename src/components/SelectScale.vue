@@ -10,14 +10,15 @@ defineEmits(['onScaleClick']);
 <template>
     <div class="w-scale">
         <span
-         @click="$emit('onScaleClick', 'c')" 
-         :class="{ 'w-scale-active': selected === 'c' }" 
-         class="w-scale-btn w-scale-celsius"
+            @click="$emit('onScaleClick', 'c')"
+            :class="{ 'w-scale-active': selected === 'c' }"
+            class="w-scale-btn w-scale-celsius"
         >°C</span>
         <span>|</span>
-        <span 
-        @click="$emit('onScaleClick', 'f')" 
-        :class="{ 'w-scale-active' : selected === 'f'}" class="w-scale-btn w-scale-fahrenheit"
+        <span
+            @click="$emit('onScaleClick', 'f')"
+            :class="{ 'w-scale-active': selected === 'f' }"
+            class="w-scale-btn w-scale-fahrenheit"
         >°F</span>
     </div>
 </template>
