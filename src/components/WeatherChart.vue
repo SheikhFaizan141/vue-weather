@@ -1,7 +1,5 @@
 <script setup>
-const props = defineProps(['tzOffset', 'hourlyForecast', 'unit']);
-
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 import { Line } from 'vue-chartjs'
 import {
     Chart as ChartJS,
@@ -12,40 +10,13 @@ import {
     Title,
     Tooltip,
     Legend,
-    LogarithmicScale
+    Filler
 } from 'chart.js';
 import { formatUnit } from '../global/utils';
 
-ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale, Filler)
 
-// watchEffect(async () => {
-
-// })
-
-// const labels = Utils.months({count: 7});
-// export default {
-//     name: 'WeatherChart',
-//     components: { Line },
-//     data() {
-//         return {
-//             chartData: {
-//                 labels: ['January', 'February', 'March'],
-//                 datasets: [{
-//                     label: 'My First Dataset',
-//                     data: [65, 59, 80, 81, 56, 55, 40],
-//                     fill: false,
-//                     borderColor: 'rgb(75, 192, 192)',
-//                     tension: 0.1
-//                 }]
-//             },
-//             chartOptions: {
-//                 responsive: true
-//             }
-//         }
-//     }
-// }
-
-
+const props = defineProps(['tzOffset', 'hourlyForecast', 'unit']);
 
 
 function time(value) {
@@ -53,21 +24,6 @@ function time(value) {
 
     console.log(res);
 }
-
-
-
-// function getChartData() {
-//     let result = new Map();
-
-//     let labels = [];
-//     let data = [];
-
-//     for (let i = 0; i < 8; i++) {
-//         const element = array[i];
-
-//     }
-// }
-
 
 function getData() {
     let res = props.hourlyForecast.map(item => {
@@ -94,8 +50,8 @@ const chartData = ref({
     datasets: [{
         label: 'temp',
         data: data,
-        // clip: 1,
-        fill: false,
+        fill: true,
+        backgroundColor: 'rgb(100, 168, 177, 0.65)',
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.4
     }],
@@ -104,6 +60,7 @@ const chartData = ref({
 
 const chartOptions = ref({
     responsive: true,
+    aspectRatio: 2|1,
     // pointRadius: 0,
     scales: {
         y: {
@@ -113,8 +70,6 @@ const chartOptions = ref({
             // display: false,
             // suggestedMin: Math.min(...data)  - 5,
             // suggestedMax: Math.max(...data) + 5,
-            // suggestedMin: Math.min(...data.slice(0, 8)) - 5,
-            // suggestedMax: Math.max(...data.slice(0, 8)) + 5,
             // min: Math.min(...data.slice(0, 8))  - 5,
             // max: Math.max(...data.slice(0, 8)) + 5,
             border: {
@@ -129,7 +84,7 @@ const chartOptions = ref({
             //     fontSize: '20px',
             // },
             ticks: {
-                // Include a dollar sign in the ticks
+                // Include a degree sign in the ticks
                 callback: function (value, index, ticks) {
                     return value + '°';
                 },
@@ -177,7 +132,7 @@ const chartOptions = ref({
 </script>
 
 <template>
-    <h2>Hourly forecast</h2>
+    <h2 class="hf-heading">Hourly forecast</h2>
     <Line
         v-if="hourlyForecast"
         id="my-chart-id"
@@ -185,3 +140,10 @@ const chartOptions = ref({
         :data="chartData"
     />
 </template>
+
+<style scoped>
+.hf-heading {
+    padding-bottom: .75rem;
+}
+
+</style>

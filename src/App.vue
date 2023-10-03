@@ -186,6 +186,14 @@ function setLocation(resLat, resLon) {
         :uv="uv"
       />
 
+      
+      <WeatherForecast
+      :scale="unit"
+      :forecast="forecast"
+      :time-offset="dt_offset"
+      @on-click="handleForecast"
+      />
+      
       <div class="w-chart-box">
         <WeatherChart 
          :tz-offset="dt_offset"
@@ -193,14 +201,7 @@ function setLocation(resLat, resLon) {
          :unit="unit"
         />
       </div>
-
-      <WeatherForecast
-        :scale="unit"
-        :forecast="forecast"
-        :time-offset="dt_offset"
-        @on-click="handleForecast"
-      />
-
+      
       <AirQuality
         :lat="lat"
         :lon="lon"
